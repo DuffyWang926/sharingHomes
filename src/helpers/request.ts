@@ -71,5 +71,27 @@ service.interceptors.response.use(
     return Promise.reject(error)
   }
 )
+let get = (url:string,params?:object) =>{
+  return axios.get(url, {
+    params: params
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  
+}
 
-export default service
+let post = (url:string,params?:object) =>{
+  return axios.post(url, {
+    params: params
+  })
+  .catch(function (error) {
+    console.log(error);
+  })
+  
+}
+const request = {
+  get,
+  post
+}
+export default request

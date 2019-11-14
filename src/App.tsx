@@ -1,10 +1,9 @@
 import React,{ Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Hello from './routes/Hello'
+import Hello from './pages/Hello'
 import { Provider } from 'react-redux';
 import store,{ history } from './store'
-import Header from './containers/Header'
+import Header from './pages/Header'
 // import { ConnectedRouter } from 'connected-react-router';
 import { Router, Route, Switch } from 'react-router-dom';
 class App extends Component {

@@ -26,7 +26,7 @@ export default combineReducers<HeaderState, HeaderAction>({
   user: (state = {name:''}, action) => {
     switch (action.type) {
       case LOGIN:
-        return {name:''}; 
+        return {name:'aaa'}; 
       default:
         return state;
     }

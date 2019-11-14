@@ -4,15 +4,39 @@ import * as Logo from '../assets/images/lenovo.png'
 import './Header.scss'
 import { user} from '../features/header/reducer'
 
+import {connect } from 'react-redux';
+import {  bindActionCreators , Dispatch } from 'redux';
+import Types from 'MyTypes';
+import { headerActions } from '../features/header';
+
 interface Props{
   tabList : string[];
   tabKey:number;
   user: user;
   changeTab(num:number):object;
+  logIn(obj:object):object;
 }
 interface State{
   
 }
+
+const mapStateToProps = (state: Types.RootState) => {
+  console.log(state)
+  return{
+    tabKey: state.header.tabKey,
+    user:state.header.user
+  }
+};
+
+
+const mapDispatchToProps = (dispatch: Dispatch<Types.RootAction>) =>
+  bindActionCreators(
+    {
+      changeTab: headerActions.changeTab,
+      logIn: headerActions.logIn,
+    },
+    dispatch
+  );
 
 class Header extends React.Component<Props,State>{
   // constructor(props:Props){
@@ -36,6 +60,7 @@ class Header extends React.Component<Props,State>{
   }
   onTabClick = (i:number) => { 
     this.props.changeTab(i)
+    this.props.logIn({})
   }
 
   render(){
@@ -63,22 +88,5 @@ class Header extends React.Component<Props,State>{
 
 }
 
-// function Header({ name, enthusiasmLevel = 1, onIncrement, onDecrement }: Props) {
-//     if (enthusiasmLevel <= 0) {
-//       throw new Error('You could be a little more enthusiastic. :D');
-//     }
-  
-//     return (
-//       <div className="hello">
-//         <div className="greeting">
-//           Hello {name + getExclamationMarks(enthusiasmLevel)}
-//         </div>
-//         <div>
-//           <button onClick={onDecrement}>-</button>
-//           <button onClick={onIncrement}>+</button>
-//         </div>
-//       </div>
-//     );
-//   }
 
-export default Header;
+export default connect(mapStateToProps, mapDispatchToProps)(Header);
