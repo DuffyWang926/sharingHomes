@@ -3,12 +3,13 @@ import _ from 'lodash';
 import * as Logo from '../assets/images/lenovo.png'
 import './Header.scss'
 import { user} from '../features/header/reducer'
+import { Modal , Input, Drawer} from 'antd'
 
 import {connect } from 'react-redux';
 import {  bindActionCreators , Dispatch } from 'redux';
 import Types from 'MyTypes';
 import { headerActions } from '../features/header';
-
+import LogIn from '../components/LogIn/LogIn'
 interface Props{
   tabList : string[];
   tabKey:number;
@@ -17,6 +18,7 @@ interface Props{
   logIn(obj:object):object;
 }
 interface State{
+  logInVisible:boolean;
   
 }
 
@@ -39,9 +41,13 @@ const mapDispatchToProps = (dispatch: Dispatch<Types.RootAction>) =>
   );
 
 class Header extends React.Component<Props,State>{
-  // constructor(props:Props){
-  //   super(props)
-  // }
+  constructor(props:Props){
+    super(props)
+    this.state={
+      logInVisible:false
+
+    }
+  }
   getTab = () =>{
     const { tabList, tabKey } = this.props
     let divList:Array<React.ReactElement> = []
@@ -62,9 +68,15 @@ class Header extends React.Component<Props,State>{
     this.props.changeTab(i)
     this.props.logIn({})
   }
+  onLogIn = () =>{
+    this.setState({
+      logInVisible:true
+    })
+    
+  }
 
   render(){
-    
+    const { logInVisible } = this.state
     return(
       <div className='header'>
         <div className='headerImg'>
@@ -74,14 +86,16 @@ class Header extends React.Component<Props,State>{
           {this.getTab()}
         </div>
         <div className='headerUser'>
-          <div className='logIn'>
+          <div className='logIn' onClick={this.onLogIn}>
             登录
           </div>
           <div className='register'>
             /注册
           </div>
         </div>
-
+        {
+          logInVisible && <LogIn/>
+        }
       </div>
     )
   }

@@ -6,6 +6,7 @@ import store,{ history } from './store'
 import Header from './pages/Header'
 // import { ConnectedRouter } from 'connected-react-router';
 import { Router, Route, Switch } from 'react-router-dom';
+
 class App extends Component {
   render(){
     return(
@@ -16,9 +17,7 @@ class App extends Component {
               <Route path="/hello" exact component={Hello} />
             </Switch>
           </Router>
-      
-      
-    </Provider>
+      </Provider>
     );
 
   } 
