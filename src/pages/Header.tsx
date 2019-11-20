@@ -3,13 +3,11 @@ import _ from 'lodash';
 import * as Logo from '../assets/images/lenovo.png'
 import './Header.scss'
 import { user} from '../features/header/reducer'
-import { Modal , Input, Drawer} from 'antd'
-
 import {connect } from 'react-redux';
 import {  bindActionCreators , Dispatch } from 'redux';
 import Types from 'MyTypes';
 import { headerActions } from '../features/header';
-import LogIn from '../components/LogIn/LogIn'
+import LogIn from '../components/LogIn/LogInUi';
 interface Props{
   tabList : string[];
   tabKey:number;
@@ -23,7 +21,6 @@ interface State{
 }
 
 const mapStateToProps = (state: Types.RootState) => {
-  console.log(state)
   return{
     tabKey: state.header.tabKey,
     user:state.header.user
@@ -66,7 +63,7 @@ class Header extends React.Component<Props,State>{
   }
   onTabClick = (i:number) => { 
     this.props.changeTab(i)
-    this.props.logIn({})
+    this.props.logIn({name:'wefRoot',password:'123456'})
   }
   onLogIn = () =>{
     this.setState({
@@ -74,9 +71,41 @@ class Header extends React.Component<Props,State>{
     })
     
   }
+  updateVisible =(visible:boolean) =>{
+    this.setState({
+      logInVisible:visible
+    })
 
+  }
+  isUser = () =>{
+    const { user } = this.props
+    const { name } = user
+    let  res = 
+    <div className='headerUser'>
+    {
+      name ?
+      <div className='showUser'>
+        {name}
+      </div>
+      : 
+      <div>
+        <div className='logIn' onClick={this.onLogIn}>
+          登录
+        </div>
+        <div className='register'>
+          /注册
+        </div>
+      </div>
+    }
+    </div>
+    
+    return res
+  }
   render(){
     const { logInVisible } = this.state
+    const { user } = this.props
+    const { name } = user
+
     return(
       <div className='header'>
         <div className='headerImg'>
@@ -85,17 +114,9 @@ class Header extends React.Component<Props,State>{
         <div className='headerTabs'>
           {this.getTab()}
         </div>
-        <div className='headerUser'>
-          <div className='logIn' onClick={this.onLogIn}>
-            登录
-          </div>
-          <div className='register'>
-            /注册
-          </div>
-        </div>
-        {
-          logInVisible && <LogIn/>
-        }
+        {this.isUser()}
+        <LogIn visible={logInVisible} updateVisible={this.updateVisible}/>
+        
       </div>
     )
   }

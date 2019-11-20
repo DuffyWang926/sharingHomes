@@ -1,6 +1,6 @@
 import axios from 'axios'
 import {message} from 'antd'
-import _ from 'lodash'
+import { errorList } from '../constants/errorHttp'
 // 创建axios实例
 
 let service = axios.create({
@@ -32,29 +32,10 @@ service.interceptors.response.use(
     const res = response.data;
     console.log(res)
     if (Number(res.code) !== 0) {
-    //   Message({
-    //     message: res.message,
-    //     type: 'error',
-    //     duration: 2 * 1000
-    //   });
+      message.error(errorList.ZERO_CODE)
 
       if (Number(res.code) === 1002 || Number(res.code) === 1003) {
-        // MessageBox.confirm(
-        //   '登陆已过期，可以取消继续留在该页面，或者重新登录',
-        //   '确定登出',
-        //   {
-        //     confirmButtonText: '重新登录',
-        //     cancelButtonText: '取消',
-        //     type: 'warning'
-        //   }
-        // ).then(() => {
-        //   localStorage.removeItem('authkey');
-        //   localStorage.removeItem('SHID');
-        //   localStorage.removeItem('sysUser');
-        //   localStorage.removeItem('resources');
-        //   localStorage.removeItem('sysDicts');
-        //   
-        // })
+        message.error(errorList.TOKEN_EXPIRE)
       }
       return Promise.reject('error')
     } else {
@@ -62,12 +43,7 @@ service.interceptors.response.use(
     }
   },
   error => {
-    console.log('err' + error) // for debug
-    // Message({
-    //   message: error.message,
-    //   type: 'error',
-    //   duration: 2 * 1000
-    // })
+    message.error(errorList.ZERO_CODE)
     return Promise.reject(error)
   }
 )
@@ -81,10 +57,8 @@ let get = (url:string,params?:object) =>{
   
 }
 
-let post = (url:string,params?:object) =>{
-  return axios.post(url, {
-    params: params
-  })
+let post = (url:string,data?:object) =>{
+  return axios.post(url, data)
   .catch(function (error) {
     console.log(error);
   })
